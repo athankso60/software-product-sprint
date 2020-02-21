@@ -2,17 +2,52 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Portfolio | Andrew Thankson</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body class="container">
     <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
+      <h1>Andrew Thankson</h1>
+      
+      <img class="andrew-img" src="images/andrew.png" width="100px" height="150px" alt="picture of andrew thankson">
+      <strong><a href="https://www.linkedin.com/in/andrewthankson/">LinkedIn</a></strong>   |
+      <strong><a href="https://github.com/athankso60">Github</a></strong>
+      <section class="intro"> 
+      <h2>A little about me</h2>
+    
+      <p>Hi all, I'm Andrew and I'm glad you're here! I'm currently a Sophomore Computer Science Major and Philosophy minor at the
+          University of Rochester. I am originally from the Eastern Region of Ghana, currently living in Rochester, New York and I'm 
+          super passionate about technology and how fast it's growing.
+      </p>
+      </section>
+    <section>
+      <h2>How I got into CS</h2>
+      <p>I've always loved tinkering with new stuff. After high school, I had to develop a website for an organization my friends and I 
+          were starting. After learning to display stuff on a screen, I never looked back. </p>
+    </section>
+
+
+    <section>
+        <h2>List of projects I've worked on</h2>
+        <p>
+            <ul>
+                <li><a href="https://github.com/PrinceSAnnor/autograd">Autograd:</a> An automatic grading system for Suacode.</li>
+                <li><a href="https://github.com/yoloventure/frontend/">YoloShadow:</a>Frontend of a job shadow website</li>
+                <li><a href="https://github.com/athankso60?tab=repositories"></a>more</li>
+
+            </ul>
+        </p>
+
+
+    </section>
+
+
+      </section>
       <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+      <button onclick="addRandomQuote()">Hello</button>
+      <div id="quote-container"></div>
     </div>
   </body>
 </html>
