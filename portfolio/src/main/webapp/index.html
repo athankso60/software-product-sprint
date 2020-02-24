@@ -8,7 +8,7 @@
     <script src="script.js"></script>
   </head>
   <body class="container">
-    <div id="content">
+    
 
 <div class="jumbotron">
         <div class="container">
@@ -64,18 +64,18 @@
 <div class= "jumbotron">
 
     <div class="container">
-        <div id="gallery">
-        <h1>My image gallery</h1>
-        <p>Here are some random images I like:</p>
-      <div class="image-thumbnails">
-        <a href="images/andrew-1.jpeg"><img src="images/andrew-1.jpeg"/></a>
-        <a href="images/andrew-2.jpeg"><img src="images/andrew-2.jpeg"/></a>
-        <a href="images/andrew-3.jpeg"><img src="images/andrew-3.jpeg"/></a>
-        <a href="images/andrew-4.jpeg"><img src="images/andrew-4.jpeg"/></a>
-        <a href="images/andrew-5.jpeg"><img src="images/andrew-5.jpeg"/></a>
-        <a href="images/andrew-6.jpeg"><img src="images/andrew-6.jpeg"/></a>
-        <a href="images/food.jpeg"><img src="images/food.jpeg"/></a>
-      </div>
+    <div id="gallery">
+            <h1>My image gallery</h1>
+            <p>Here are some random images I like:</p>
+            <div class="image-thumbnails">
+                <a href="images/andrew-1.jpeg"><img src="images/andrew-1.jpeg"/></a>
+                <a href="images/andrew-2.jpeg"><img src="images/andrew-2.jpeg"/></a>
+                <a href="images/andrew-3.jpeg"><img src="images/andrew-3.jpeg"/></a>
+                <a href="images/andrew-4.jpeg"><img src="images/andrew-4.jpeg"/></a>
+                <a href="images/andrew-5.jpeg"><img src="images/andrew-5.jpeg"/></a>
+                <a href="images/andrew-6.jpeg"><img src="images/andrew-6.jpeg"/></a>
+                <a href="images/food.jpeg"><img src="images/food.jpeg"/></a>
+            </div>
     </div>
         
     </div>
@@ -83,12 +83,13 @@
 
 </div>    
 
-    
-
+        <div class="jumbotron">
+            <div class="container">
+            <p>Click here to get a random message:</p>
+            <button onclick="addRandomQuote()">Give me that message!</button>
+            <div id="quote-container"></div>
+            </div>
         </div>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomQuote()">Hello</button>
-      <div id="quote-container"></div>
     </div>
   </body>
 </html>
