@@ -27,7 +27,7 @@ p{
 .image-thumbnails {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: start;
 }
 
 .image-thumbnails img {
