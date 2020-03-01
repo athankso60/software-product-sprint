@@ -32,23 +32,29 @@ public class DataServlet extends HttpServlet {
      @Override
   public void init() {
     hard_coded_messages = new ArrayList<String>();
-    hard_coded_messages.add("I love Google SPS");
-    hard_coded_messages.add("A wise man once said nothing");
-    hard_coded_messages.add("I love Memes too!");
+    // hard_coded_messages.add("I love Google SPS");
+    // hard_coded_messages.add("A wise man once said nothing");
+    // hard_coded_messages.add("I love Memes too!");
   }
 
 
      private String convertToJson(ArrayList<String> messages) {
         String json = "{";
-        json += "\"message_1\": ";
-        json += "\"" + messages.get(0)+ "\"";
-        json += ", ";
-        json += "\"message_2\": ";
-        json += "\"" + messages.get(1) + "\"";
-        json += ", ";
-        json += "\"message_3\": ";
-        json += "\"" + messages.get(2) + "\"";
+         for(int i = 0 ; i< messages.size(); i++){
+            json+= "\"message_"+ Integer.toString(i)+"\": ";
+            json += "\"" + messages.get(i)+ "\"";
+         }
         json += "}";
+        // String json = "{";
+        // json += "\"message_1\": ";
+        // json += "\"" + messages.get(0)+ "\"";
+        // json += ", ";
+        // json += "\"message_2\": ";
+        // json += "\"" + messages.get(1) + "\"";
+        // json += ", ";
+        // json += "\"message_3\": ";
+        // json += "\"" + messages.get(2) + "\"";
+        // json += "}";
         return json;
     }
 
@@ -62,5 +68,27 @@ public class DataServlet extends HttpServlet {
     // Send the JSON as the response
     response.setContentType("application/json;");
     response.getWriter().println(json);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String text = getParameter(request, "text-input", "");
+    hard_coded_messages.add(text);
+    
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/index.html");
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }
