@@ -30,3 +30,10 @@ function addRandomQuote() {
   const quoteContainer = document.getElementById('quote-container');
   quoteContainer.innerText = quote;
 }
+
+//use fetch to request content from server and add it to page.
+async function getMyName() {
+  const response = await fetch('/data');
+  const quote = await response.text();
+  document.getElementById('name-container').innerText = quote;
+}
