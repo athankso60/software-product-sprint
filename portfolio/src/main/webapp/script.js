@@ -32,8 +32,38 @@ function addRandomQuote() {
 }
 
 //use fetch to request content from server and add it to page.
-async function getMyName() {
-  const response = await fetch('/data');
-  const quote = await response.text();
-  document.getElementById('name-container').innerText = quote;
+// async function getMyName() {
+//   const response = await fetch('/data');
+//   const quote = await response.text();
+//   document.getElementById('name-container').innerText = quote;
+// }
+
+function getMessages() {
+  fetch('/data').then(response => response.json()).then((messages) => {
+    console.log(messages.message_1);
+    console.log(messages.message_2);
+    console.log(messages.message_3);
+
+    
+
+    const commentList = document.getElementById('message-container');
+    commentList.innerHTML = '';
+    commentList.appendChild(
+        createListElement('Comment 1: ' + messages.message_1));
+    commentList.appendChild(
+        createListElement('Comment 2: ' + messages.message_2));
+    commentList.appendChild(
+        createListElement('Comment 3: ' + messages.message_3));
+    
+  });
 }
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
+
+
