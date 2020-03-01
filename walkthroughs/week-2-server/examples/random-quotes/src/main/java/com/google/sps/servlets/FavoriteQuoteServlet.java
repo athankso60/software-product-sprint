@@ -1,3 +1,4 @@
+/*Practice serverlet*/
 // Copyright 2019 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +13,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
+
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
+/** Test Serverlet that returns favorite quote */
+@WebServlet("/favorite-quote")
+public final class FavoriteQuoteServlet extends HttpServlet {
+
+  
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String favQuote = "Great spirits have always encountered opposition from mediocre minds. The mediocre mind is incapable of understanding the man who refuses to bow blindly to conventional prejudices and chooses instead to express his opinions courageously and honestly.-Albert Einsten";
+
     response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Andrew Thankson!</h1>");
+    response.getWriter().println(favQuote);
   }
 }

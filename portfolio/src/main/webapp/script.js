@@ -15,14 +15,25 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+function addRandomQuote() {
+//add random quotes I love
+  const randomQuote =
+      [' "Knowing is not enough we must apply, Willing is not enough we must do -Bruce Lee"', 
+      ' "Great Spirits have always encountered violient opposition from mediocre minds - Albert Einstein"',
+       '"Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. And the only way to do great work is to love what you do. If you haven\'t found it yet, keep looking. Don\'t settle." - Steve Jobs', 
+       '"Fear can hold you prisoner, Hope can set you free." - Shawshank Redemption'];
 
   // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  const quote = randomQuote[Math.floor(Math.random() * randomQuote.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const quoteContainer = document.getElementById('quote-container');
+  quoteContainer.innerText = quote;
+}
+
+//use fetch to request content from server and add it to page.
+async function getMyName() {
+  const response = await fetch('/data');
+  const quote = await response.text();
+  document.getElementById('name-container').innerText = quote;
 }
