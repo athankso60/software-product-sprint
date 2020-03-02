@@ -82,7 +82,7 @@ public class DataServlet extends HttpServlet {
     List<String> messages = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
-      String message = (String) entity.getProperty("message");
+      String message = (String) entity.getProperty("text");
       long timestamp = (long) entity.getProperty("timestamp");
 
       messages.add(message);

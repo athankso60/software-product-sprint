@@ -50,8 +50,9 @@ function getMessages() {
     const commentList = document.getElementById('message-container');
     commentList.innerHTML = '';
     for( let element in messages ){
-    console.log( element.text );
-    commentList.appendChild(createListElement(element.text));
+    var node = createListElement(messages[element]);
+    console.log(node);
+    commentList.appendChild(node);
     }
     // commentList.appendChild(
     //     createListElement('Comment 1: ' + messages.message_1));
