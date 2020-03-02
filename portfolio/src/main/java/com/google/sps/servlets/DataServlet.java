@@ -14,7 +14,13 @@
 
 package com.google.sps.servlets;
 
-
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -67,16 +73,37 @@ public class DataServlet extends HttpServlet {
     // Send the JSON as the response
     // response.setContentType("application/json;");
     // response.getWriter().println(json);
+
+    Query query = new Query("Message").addSort("timestamp", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<String> messages = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String message = (String) entity.getProperty("message");
+      long timestamp = (long) entity.getProperty("timestamp");
+
+      messages.add(message);
+    }
+
+    Gson gson = new Gson();
+
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(messages));
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = getParameter(request, "text-input", "");
+    long timestamp = System.currentTimeMillis();
     //hard_coded_messages.add(text);
     
 
     Entity messageEntity = new Entity("Message");
     messageEntity.setProperty("text", text);
+    messageEntity.setProperty("timestamp", timestamp);
     
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

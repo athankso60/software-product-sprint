@@ -40,20 +40,25 @@ function addRandomQuote() {
 
 function getMessages() {
   fetch('/data').then(response => response.json()).then((messages) => {
-    console.log(messages.message_1);
-    console.log(messages.message_2);
-    console.log(messages.message_3);
+    // console.log(messages.message_1);
+    // console.log(messages.message_2);
+    // console.log(messages.message_3);
+    console.log(messages);
 
     
 
     const commentList = document.getElementById('message-container');
     commentList.innerHTML = '';
-    commentList.appendChild(
-        createListElement('Comment 1: ' + messages.message_1));
-    commentList.appendChild(
-        createListElement('Comment 2: ' + messages.message_2));
-    commentList.appendChild(
-        createListElement('Comment 3: ' + messages.message_3));
+    for( let element in messages ){
+    console.log( element.text );
+    commentList.appendChild(createListElement(element.text));
+    }
+    // commentList.appendChild(
+    //     createListElement('Comment 1: ' + messages.message_1));
+    // commentList.appendChild(
+    //     createListElement('Comment 2: ' + messages.message_2));
+    // commentList.appendChild(
+    //     createListElement('Comment 3: ' + messages.message_3));
     
   });
 }
