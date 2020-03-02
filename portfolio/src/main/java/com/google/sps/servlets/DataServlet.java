@@ -14,6 +14,10 @@
 
 package com.google.sps.servlets;
 
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,35 +30,30 @@ import java.util.*;
 public class DataServlet extends HttpServlet {
 
     //  private List<String> quotes;
-     private ArrayList<String> hard_coded_messages;
+     //private ArrayList<String> hard_coded_messages;
      
 
      @Override
   public void init() {
-    hard_coded_messages = new ArrayList<String>();
-    // hard_coded_messages.add("I love Google SPS");
-    // hard_coded_messages.add("A wise man once said nothing");
-    // hard_coded_messages.add("I love Memes too!");
+    //hard_coded_messages = new ArrayList<String>();
+    //DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
 
      private String convertToJson(ArrayList<String> messages) {
         String json = "{";
          for(int i = 0 ; i< messages.size(); i++){
-            json+= "\"message_"+ Integer.toString(i)+"\": ";
-            json += "\"" + messages.get(i)+ "\"";
+            if(i == messages.size()-1){
+                json+= "\"message_"+ Integer.toString(i)+"\": ";
+                json += "\"" + messages.get(i)+ "\"";
+            }else{
+                json+= "\"message_"+ Integer.toString(i)+"\": ";
+                json += "\"" + messages.get(i)+ "\"";
+                json += ", ";
+            }
          }
         json += "}";
-        // String json = "{";
-        // json += "\"message_1\": ";
-        // json += "\"" + messages.get(0)+ "\"";
-        // json += ", ";
-        // json += "\"message_2\": ";
-        // json += "\"" + messages.get(1) + "\"";
-        // json += ", ";
-        // json += "\"message_3\": ";
-        // json += "\"" + messages.get(2) + "\"";
-        // json += "}";
+        
         return json;
     }
 
@@ -63,18 +62,25 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
      // Convert messages to JSON
-    String json = convertToJson(hard_coded_messages);
+    //String json = convertToJson(hard_coded_messages);
 
     // Send the JSON as the response
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
+    // response.setContentType("application/json;");
+    // response.getWriter().println(json);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = getParameter(request, "text-input", "");
-    hard_coded_messages.add(text);
+    //hard_coded_messages.add(text);
     
+
+    Entity messageEntity = new Entity("Message");
+    messageEntity.setProperty("text", text);
+    
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(messageEntity);
 
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html");
