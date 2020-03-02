@@ -34,45 +34,11 @@ import java.util.*;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
-    //  private List<String> quotes;
-     //private ArrayList<String> hard_coded_messages;
-     
-
-     @Override
-  public void init() {
-    //hard_coded_messages = new ArrayList<String>();
-    //DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  }
-
-
-     private String convertToJson(ArrayList<String> messages) {
-        String json = "{";
-         for(int i = 0 ; i< messages.size(); i++){
-            if(i == messages.size()-1){
-                json+= "\"message_"+ Integer.toString(i)+"\": ";
-                json += "\"" + messages.get(i)+ "\"";
-            }else{
-                json+= "\"message_"+ Integer.toString(i)+"\": ";
-                json += "\"" + messages.get(i)+ "\"";
-                json += ", ";
-            }
-         }
-        json += "}";
-        
-        return json;
-    }
-
-     
+   
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-     // Convert messages to JSON
-    //String json = convertToJson(hard_coded_messages);
-
-    // Send the JSON as the response
-    // response.setContentType("application/json;");
-    // response.getWriter().println(json);
+    
 
     Query query = new Query("Message").addSort("timestamp", SortDirection.DESCENDING);
 
@@ -98,7 +64,6 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = getParameter(request, "text-input", "");
     long timestamp = System.currentTimeMillis();
-    //hard_coded_messages.add(text);
     
 
     Entity messageEntity = new Entity("Message");
