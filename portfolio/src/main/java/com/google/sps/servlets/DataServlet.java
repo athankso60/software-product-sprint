@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import java.text.SimpleDateFormat;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
@@ -49,9 +50,9 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       String message = (String) entity.getProperty("text");
-      long timestamp = (long) entity.getProperty("timestamp");
+      String timestamp = (String) entity.getProperty("timestamp");
 
-      messages.add(message);
+      messages.add(timestamp + ":   "+message);//format message
     }
 
     Gson gson = new Gson();
@@ -64,11 +65,13 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = getParameter(request, "text-input", "");
     long timestamp = System.currentTimeMillis();
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z");   
     
 
     Entity messageEntity = new Entity("Message");
     messageEntity.setProperty("text", text);
-    messageEntity.setProperty("timestamp", timestamp);
+    messageEntity.setProperty("timestamp", sdf.format(timestamp));
     
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
