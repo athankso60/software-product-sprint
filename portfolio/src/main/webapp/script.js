@@ -12,9 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*Hide comment form*/
+
+
+checkWhetherUserIsLoggedIn();
+
+//
+
 /**
  * Adds a random greeting to the page.
  */
+
 function addRandomQuote() {
 //add random quotes I love
   const randomQuote =
@@ -48,11 +56,54 @@ function getMessages() {
   });
 }
 
+
+
+//check whether user is logged in using async
+async function checkWhetherUserIsLoggedIn() {
+    const commentForm = document.getElementById('comment-form');
+    const logInOutDiv = document.getElementById('logInOut');
+  //set visibility of form and logurl to none
+   commentForm.style.display="none";
+   logInOutDiv.style.display="none";
+  
+  //get login status
+  const response = await fetch('/login');
+  const loginInfo = await response.json();
+  console.log(loginInfo);
+
+  //convert login information to json object
+//   var obj = JSON.parse(loginInfo);
+//   console.log(obj.isLoggedIn);
+//   console.log(obj.logUrl);
+
+  //display form and logUrl based on whether user is logged in or not
+  if(loginInfo.isLoggedIn === "true"){
+      
+      commentForm.style.display="block";
+      logInOutDiv.innerHTML = '';
+      logInOutDiv.appendChild(createLinkElement("Logout here",loginInfo.logUrl));
+      logInOutDiv.style.display="block";
+  }else{
+      logInOutDiv.innerHTML = '';
+      logInOutDiv.appendChild(createLinkElement("Login here to add comments",loginInfo.logUrl));
+      logInOutDiv.style.display="block";
+  }
+}
+
 /** Creates an <li> element containing text. */
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text;
   return liElement;
+}
+
+/*Creates a <a> element containing text */
+function createLinkElement(text,link) {
+  const linkElement = document.createElement('a');
+  linkElement.appendChild(document.createTextNode(text));
+  linkElement.title = text;
+  linkElement.href = link;
+  return linkElement;
 }
 
 

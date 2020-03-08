@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -39,7 +41,6 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
 
     Query query = new Query("Message").addSort("timestamp", SortDirection.DESCENDING);
 
@@ -51,8 +52,9 @@ public class DataServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String message = (String) entity.getProperty("text");
       String timestamp = (String) entity.getProperty("timestamp");
+      String email = (String) entity.getProperty("email");
 
-      messages.add(timestamp + ":   "+message);//format message
+      messages.add(timestamp + ":   "+ email + ":   "+message);//format message
     }
 
     Gson gson = new Gson();
@@ -63,15 +65,27 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String userEmail;
+    UserService userService = UserServiceFactory.getUserService();
+    
     String text = getParameter(request, "text-input", "");
     long timestamp = System.currentTimeMillis();
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z");   
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z");  
+
+    
     
 
     Entity messageEntity = new Entity("Message");
     messageEntity.setProperty("text", text);
     messageEntity.setProperty("timestamp", sdf.format(timestamp));
+    if (userService.isUserLoggedIn()){
+        userEmail = userService.getCurrentUser().getEmail();
+        messageEntity.setProperty("email",userEmail);
+    } 
+    
+
+    
     
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
