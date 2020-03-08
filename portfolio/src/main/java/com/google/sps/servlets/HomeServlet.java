@@ -40,31 +40,11 @@ public class HomeServlet extends HttpServlet {
       response.setContentType("application/json;");
       response.getWriter().println(gson.toJson(userEmail));
     } else {
-      String urlToRedirectToAfterUserLogsIn = "/";
-      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
-
-      response.getWriter().println("<p>Hello stranger.</p>");
-      response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
+      Gson gson = new Gson();
+      response.setContentType("application/json;");
+      response.getWriter().println(gson.toJson("null"));
     }
   }
 
-  /**
-   * Converts a User information into a JSON string using manual String concatentation.
-   */
-//   private String convertToJson(String userEmail) {
-//     String json = "{";
-//     json += "\"startTime\": ";
-//     json += "\"" + serverStats.getStartTime() + "\"";
-//     json += ", ";
-//     json += "\"currentTime\": ";
-//     json += "\"" + serverStats.getCurrentTime() + "\"";
-//     json += ", ";
-//     json += "\"maxMemory\": ";
-//     json += serverStats.getMaxMemory();
-//     json += ", ";
-//     json += "\"usedMemory\": ";
-//     json += serverStats.getUsedMemory();
-//     json += "}";
-//     return json;
-//   }
+  
 }

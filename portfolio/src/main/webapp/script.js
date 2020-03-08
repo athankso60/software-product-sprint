@@ -12,9 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*Hide comment form*/
+
+
+checkWhetherUserIsLoggedIn();
+
+//
+
 /**
  * Adds a random greeting to the page.
  */
+
 function addRandomQuote() {
 //add random quotes I love
   const randomQuote =
@@ -49,7 +57,28 @@ function getMessages() {
 }
 
 
+//check if user is loggined
+function userIsLoggedIn(userinfo){
+    if(userinfo === "\"null\""){
+        return false;
+    }else{
+        return true;
+    }
+}
 
+//check whether user is logged in using async
+async function checkWhetherUserIsLoggedIn() {
+  const response = await fetch('/login');
+  const quote = await response.text();
+  console.log(quote);
+  console.log(userIsLoggedIn(quote));
+  if(userIsLoggedIn(quote)){
+      document.getElementById('comment-form').style.display="block";
+  }else{
+      document.getElementById('comment-form').innerHTML = '';
+      document.getElementById('comment-form').appendChild(createElement('p').innerText = "Login Here");
+  }
+}
 
 /** Creates an <li> element containing text. */
 function createListElement(text) {

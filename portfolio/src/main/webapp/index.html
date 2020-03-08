@@ -96,10 +96,10 @@
             </div>
         </div>
 
-        <div class="jumbotron">
+        <div class="jumbotron" >
 
             <h2>Leave me a comment</h2>
-            <form action="/data" method="POST">
+            <form id= "comment-form" action="/data" method="POST">
 
                     <p>Leave feedback for my Portfolio:</p>
                     <textarea name="text-input">Tell me anything</textarea>
@@ -117,4 +117,7 @@
         </div>
     </div>
   </body>
+  <script>
+      document.getElementById('comment-form').style.display="none";
+  </script>
 </html>
