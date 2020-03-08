@@ -32,18 +32,36 @@ public class HomeServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
+      boolean isLoggedIn = true;
       String userEmail = userService.getCurrentUser().getEmail();
       String urlToRedirectToAfterUserLogsOut = "/";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
-      Gson gson = new Gson();
+      
       response.setContentType("application/json;");
-      response.getWriter().println(gson.toJson(userEmail));
+      response.getWriter().println(convertToJson(isLoggedIn,logoutUrl));
     } else {
-      Gson gson = new Gson();
-      response.setContentType("application/json;");
-      response.getWriter().println(gson.toJson("null"));
+      boolean isLoggedIn = false;
+      String urlToRedirectToAfterUserLogsIn = "/";
+      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+      
+     response.setContentType("application/json;");
+     response.getWriter().println(convertToJson(isLoggedIn,loginUrl));
+
+      
     }
+  }
+
+  //manually converts login status to boolean
+  private String convertToJson(boolean isLoggedIn, String logUrl) {
+    String json = "{";
+    json += "\"isLoggedIn\": ";
+    json += "\"" + Boolean.toString(isLoggedIn) + "\"";
+    json += ", ";
+    json += "\"logUrl\": ";
+    json += "\"" + logUrl + "\"";
+    json += "}";
+    return json;
   }
 
   

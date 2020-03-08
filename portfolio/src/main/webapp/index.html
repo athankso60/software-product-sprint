@@ -5,7 +5,6 @@
     <title>Portfolio | Andrew Thankson</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
   </head>
   <body class="container">
     
@@ -99,7 +98,8 @@
         <div class="jumbotron" >
 
             <h2>Leave me a comment</h2>
-            <form id= "comment-form" action="/data" method="POST">
+            <div id= "comment-form">
+            <form action="/data" method="POST">
 
                     <p>Leave feedback for my Portfolio:</p>
                     <textarea name="text-input">Tell me anything</textarea>
@@ -107,6 +107,11 @@
 
                     <input type="submit" />
             </form>
+            </div>
+
+            <div id="logInOut">
+
+            </div>
         </div>
 
         <div class="jumbotron">
@@ -116,8 +121,9 @@
                 <div id="message-container"></div>
         </div>
     </div>
+
+    <script src="script.js"></script>
   </body>
-  <script>
-      document.getElementById('comment-form').style.display="none";
-  </script>
+  
+
 </html>

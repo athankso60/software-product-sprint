@@ -57,26 +57,33 @@ function getMessages() {
 }
 
 
-//check if user is loggined
-function userIsLoggedIn(userinfo){
-    if(userinfo === "\"null\""){
-        return false;
-    }else{
-        return true;
-    }
-}
 
 //check whether user is logged in using async
 async function checkWhetherUserIsLoggedIn() {
+  //set visibility of form and logurl to none
+  document.getElementById('comment-form').style.display="none";
+  document.getElementById('logInOut').style.display="none";
+  
+  //get login status
   const response = await fetch('/login');
   const quote = await response.text();
   console.log(quote);
-  console.log(userIsLoggedIn(quote));
-  if(userIsLoggedIn(quote)){
+
+  //convert login information to json object
+  var obj = JSON.parse(quote);
+  console.log(obj.isLoggedIn);
+  console.log(obj.logUrl);
+
+  //display form and logUrl based on whether user is logged in or not
+  if(obj.isLoggedIn === "true"){
       document.getElementById('comment-form').style.display="block";
+      document.getElementById('logInOut').innerHTML = '';
+      document.getElementById('logInOut').appendChild(createLinkElement("Logout here",obj.logUrl));
+      document.getElementById('logInOut').style.display="block";
   }else{
-      document.getElementById('comment-form').innerHTML = '';
-      document.getElementById('comment-form').appendChild(createElement('p').innerText = "Login Here");
+      document.getElementById('logInOut').innerHTML = '';
+      document.getElementById('logInOut').appendChild(createLinkElement("Login here to add comments",obj.logUrl));
+      document.getElementById('logInOut').style.display="block";
   }
 }
 
@@ -85,6 +92,15 @@ function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text;
   return liElement;
+}
+
+/*Creates a <a> element containing text */
+function createLinkElement(text,link) {
+  const linkElement = document.createElement('a');
+  linkElement.appendChild(document.createTextNode(text));
+  linkElement.title = text;
+  linkElement.href = link;
+  return linkElement;
 }
 
 
