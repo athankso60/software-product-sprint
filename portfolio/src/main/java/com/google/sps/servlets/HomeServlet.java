@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC
+
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class HomeServlet extends HttpServlet {
   private String convertToJson(boolean isLoggedIn, String logUrl) {
     String json = "{";
     json += "\"isLoggedIn\": ";
-    json += "\"" + Boolean.toString(isLoggedIn) + "\"";
+    json += "\"" + isLoggedIn + "\"";
     json += ", ";
     json += "\"logUrl\": ";
     json += "\"" + logUrl + "\"";

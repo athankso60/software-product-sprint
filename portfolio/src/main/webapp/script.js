@@ -60,30 +60,33 @@ function getMessages() {
 
 //check whether user is logged in using async
 async function checkWhetherUserIsLoggedIn() {
+    const commentForm = document.getElementById('comment-form');
+    const logInOutDiv = document.getElementById('logInOut');
   //set visibility of form and logurl to none
-  document.getElementById('comment-form').style.display="none";
-  document.getElementById('logInOut').style.display="none";
+   commentForm.style.display="none";
+   logInOutDiv.style.display="none";
   
   //get login status
   const response = await fetch('/login');
-  const quote = await response.text();
-  console.log(quote);
+  const loginInfo = await response.json();
+  console.log(loginInfo);
 
   //convert login information to json object
-  var obj = JSON.parse(quote);
-  console.log(obj.isLoggedIn);
-  console.log(obj.logUrl);
+//   var obj = JSON.parse(loginInfo);
+//   console.log(obj.isLoggedIn);
+//   console.log(obj.logUrl);
 
   //display form and logUrl based on whether user is logged in or not
-  if(obj.isLoggedIn === "true"){
-      document.getElementById('comment-form').style.display="block";
-      document.getElementById('logInOut').innerHTML = '';
-      document.getElementById('logInOut').appendChild(createLinkElement("Logout here",obj.logUrl));
-      document.getElementById('logInOut').style.display="block";
+  if(loginInfo.isLoggedIn === "true"){
+      
+      commentForm.style.display="block";
+      logInOutDiv.innerHTML = '';
+      logInOutDiv.appendChild(createLinkElement("Logout here",loginInfo.logUrl));
+      logInOutDiv.style.display="block";
   }else{
-      document.getElementById('logInOut').innerHTML = '';
-      document.getElementById('logInOut').appendChild(createLinkElement("Login here to add comments",obj.logUrl));
-      document.getElementById('logInOut').style.display="block";
+      logInOutDiv.innerHTML = '';
+      logInOutDiv.appendChild(createLinkElement("Login here to add comments",loginInfo.logUrl));
+      logInOutDiv.style.display="block";
   }
 }
 
