@@ -107,16 +107,15 @@ public final class FindMeetingQuery {
 
 
         
-
+        try{
         Iterator<TimeRange> it = feasibleTimesForCurrentAttendee.iterator(); 
         while (it.hasNext()){
             if(feasibleTimesForPrimaryAttendee.contains(it.next())){
                 possibleTimes.add(it.next());
             }
-
-
-
-
+            
+        }
+        }catch(NoSuchElementException e){
             
         }
 
@@ -161,15 +160,21 @@ public final class FindMeetingQuery {
 
     //check if one event contains the other
    public boolean containing(TimeRange meetingTime, HashSet<TimeRange> attendeeSchedule){
-       Iterator<TimeRange> i = attendeeSchedule.iterator(); 
-        while (i.hasNext()){
-            if(i.next().contains(meetingTime) ||meetingTime.contains(i.next())){
-                return true;
-            }
-            
-        }
+       try{
+            if(attendeeSchedule.size()>0){
+                    Iterator<TimeRange> i = attendeeSchedule.iterator(); 
+                        while (i.hasNext()){
+                            if(i.next().contains(meetingTime) ||meetingTime.contains(i.next())){
+                                return true;
+                            }      
+                    }
+                }
 
-        return false;
+                return false;
+        }catch(NoSuchElementException e){
+            return false;
+
+        }
    }
 
 }
