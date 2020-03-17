@@ -123,6 +123,7 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void overlappingEvents() {
+      System.out.println("overlappingEvents!!!!!!");
     // Have an event for each person, but have their events overlap. We should only see two options.
     //
     // Events  :       |--A--|
@@ -144,7 +145,9 @@ public final class FindMeetingQueryTest {
         Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
             TimeRange.fromStartEnd(TIME_1000AM, TimeRange.END_OF_DAY, true));
 
+    System.out.println("End of overlapping Events");
     Assert.assertEquals(expected, actual);
+     
   }
 
   @Test
@@ -172,6 +175,8 @@ public final class FindMeetingQueryTest {
             TimeRange.fromStartEnd(TIME_1000AM, TimeRange.END_OF_DAY, true));
 
     Assert.assertEquals(expected, actual);
+
+   
   }
 
   @Test
@@ -225,6 +230,7 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void ignoresPeopleNotAttending() {
+    System.out.println("ignoresPeopleNotAttending");
     // Add an event, but make the only attendee someone different from the person looking to book
     // a meeting. This event should not affect the booking.
     Collection<Event> events = Arrays.asList(new Event("Event 1",

@@ -42,106 +42,180 @@ public final class FindMeetingQuery {
     if(request.getDuration() > TimeRange.WHOLE_DAY.duration())
         return Arrays.asList();
 
+    //ignoresPeopleNotAttending
+    
+
     //add attendees to attendees array
     // String[] attendees = (String[])request.getAttendees().toArray();
     List<String> attendees = new ArrayList<String>();
     attendees.addAll(request.getAttendees());
 
     //find feasible times for primary attendee
-    String primaryAttendee = attendees.get(0);
+    // String primaryAttendee = attendees.get(0);
     // System.out.println("Primary Attendee: "+primaryAttendee);
 
-    //primary attendee schedule
-    HashSet primaryAttendeeSchedule = new HashSet<TimeRange>();
+    //Times that don't work for all attendees
+    HashSet attendeeSchedule = new HashSet<TimeRange>();
 
 
     //find when primary attendee is busy in order to tell when they're not
-    for(Event event : events){
-        if(isAnAttendee(primaryAttendee,event)){//checks if primary attendant goes to this event
-            addToSchedule(primaryAttendeeSchedule, event);//adds event primary attendee schedule
-        }
-    }
+    // for(Event event : events){
+    //     if(isAnAttendee(primaryAttendee,event)){//checks if primary attendant goes to this event
+    //         addToSchedule(primaryAttendeeSchedule, event);//adds event primary attendee schedule
+    //     }
+    // }
 
     //find feasible durations for primary attendee
-    HashSet feasibleTimesForPrimaryAttendee = new HashSet<TimeRange>();
+    // HashSet feasibleTimesForPrimaryAttendee = new HashSet<TimeRange>();
 
-    for(int i = TimeRange.START_OF_DAY ; i < TimeRange.END_OF_DAY ; i+=(int) (request.getDuration())){
-        TimeRange currentMeetingTime = TimeRange.fromStartDuration(i,(int) (request.getDuration()));
-        //Test
-        // System.out.println("CurrentMeetingTime: ");
-        // System.out.println("Start: "+currentMeetingTime.start() + "End: "+ currentMeetingTime.end());
-        if(!primaryAttendeeSchedule.contains(currentMeetingTime)&&!checkIfOverlap(currentMeetingTime,primaryAttendeeSchedule)&&!containing(currentMeetingTime,primaryAttendeeSchedule))
-                        feasibleTimesForPrimaryAttendee.add(currentMeetingTime);
-    }
+    // for(int i = TimeRange.START_OF_DAY ; i < TimeRange.END_OF_DAY ; i+=(int) (request.getDuration())){
+    //     TimeRange currentMeetingTime = TimeRange.fromStartDuration(i,(int) (request.getDuration()));
+    //     //Test
+        
+    //     if(!primaryAttendeeSchedule.contains(currentMeetingTime)&&!checkIfOverlap(currentMeetingTime,primaryAttendeeSchedule)&&!containing(currentMeetingTime,primaryAttendeeSchedule))
+    //                     feasibleTimesForPrimaryAttendee.add(currentMeetingTime);
+    // }
 
-    if(numberOfAttendees ==1){
-            List<TimeRange> list = new ArrayList<TimeRange>();
-            Iterator<TimeRange> myIt = feasibleTimesForPrimaryAttendee.iterator(); 
-            while (myIt.hasNext()){
-                list.add(myIt.next());
+    // if(numberOfAttendees ==1){
+    //         List<TimeRange> list = new ArrayList<TimeRange>();
+    //         Iterator<TimeRange> myIt = feasibleTimesForPrimaryAttendee.iterator(); 
+    //         while (myIt.hasNext()){
+    //             list.add(myIt.next());
                 
-            }
+    //         }
 
-            Collections.sort(list, TimeRange.ORDER_BY_END);
+    //         Collections.sort(list, TimeRange.ORDER_BY_END);
 
-            return list;
-    }
+    //         return list;
+    // }
  
      
 
-    //check if primaryAttendee meeting times work for all other attendees.
-    for(int i = 1 ; i < numberOfAttendees ; i++){
+    //find times attendees are busy
+    for(int i = 0 ; i < numberOfAttendees ; i++){
         String currentAttendee = attendees.get(i);
         // System.out.println("Attendee "+i+ "  "+currentAttendee);
 
         //check if current attendee times works for primary attendee
-        HashSet currentAttendeeSchedule = new HashSet<TimeRange>();
+        // HashSet currentAttendeeSchedule = new HashSet<TimeRange>();
 
         for(Event event : events){
             if(isAnAttendee(currentAttendee,event)){//checks if current attendant goes to this event
-                addToSchedule(currentAttendeeSchedule, event);//adds event to current attendee schedule
+                addToSchedule(attendeeSchedule, event);//adds event to current attendee schedule
             }
         }
-
-        //find feasible times for current attendee
-        //find feasible durations for primary attendee
-        HashSet feasibleTimesForCurrentAttendee = new HashSet<TimeRange>();
-
-        for(int j = TimeRange.START_OF_DAY ; j < TimeRange.END_OF_DAY ; j+=(int) (request.getDuration())){
-
-
-            TimeRange currentMeetingTime = TimeRange.fromStartDuration(j,(int) (request.getDuration()));   
-            if(!currentAttendeeSchedule.contains(currentMeetingTime)&&!checkIfOverlap(currentMeetingTime,currentAttendeeSchedule)&&!containing(currentMeetingTime,currentAttendeeSchedule))
-                            feasibleTimesForCurrentAttendee.add(currentMeetingTime);
-
-
-        }
-
-        
-        //for each loop.
-        Iterator<TimeRange> it = feasibleTimesForCurrentAttendee.iterator(); 
-        while (it.hasNext()){
-            TimeRange currentTime = it.next();
-            if(feasibleTimesForPrimaryAttendee.contains(currentTime)){
-                possibleTimes.add(currentTime);
-            }
-            
-        }
-
-        //all possible times and remove conflicts
-        
-        
-
-        
     }
 
+    if(attendeeSchedule.size()==0){
+        return Arrays.asList(TimeRange.WHOLE_DAY);
+    }
+
+        
+
+
+        List<TimeRange> busySchedule = new ArrayList<TimeRange>();
+            Iterator<TimeRange> myIt = attendeeSchedule.iterator(); 
+            while (myIt.hasNext()){
+                busySchedule.add(myIt.next());
+                
+            }
+
+        //sort times that don't work
+        Collections.sort(busySchedule, TimeRange.ORDER_BY_END);
+
+
+        //print busySchedule
+        for(int j= 0; j<busySchedule.size() ; j++){
+            System.out.println(busySchedule.get(j));
+        }
+
+        //test
+        for(int k=0 ; k < busySchedule.size(); k++){
+            
+            //System.out.println("Timerange: "+busySchedule.get(k));
+            TimeRange currentTimeRange = busySchedule.get(k);
+            int start = currentTimeRange.start();
+            int end = currentTimeRange.end();
+            int duration = currentTimeRange.duration();
+
+            if(k == 0 && busySchedule.size()!=0){
+
+                TimeRange possibleTime = TimeRange.fromStartEnd(dayStart,start,false);
+                
+                if(possibleTime.duration() >= meetingDuration){
+                    possibleTimes.add(possibleTime);
+                    
+                }
+                
+            }
+
+            if(k == busySchedule.size()-1 && busySchedule.size()!=0){
+                
+                TimeRange possibleTime = TimeRange.fromStartEnd(end,dayEnd,true);
+
+                if(k!=0){
+                    TimeRange anotherPossibleTime = TimeRange.fromStartEnd(end,dayEnd,true);
+                    if(anotherPossibleTime.contains(possibleTime)||anotherPossibleTime.overlaps(possibleTime)){
+                        if(anotherPossibleTime.duration() >= meetingDuration){
+                            possibleTimes.add(possibleTime);
+                            
+                        }
+
+                    }
+                    
+                }else{
+                    if(possibleTime.duration() >= meetingDuration){
+                        possibleTimes.add(possibleTime); 
+                    }
+                }
+
+               
+                
+                
+
+                
+
+
+                
+            }
+
+            if(k+1<busySchedule.size()){
+                
+                TimeRange possibleTime = TimeRange.fromStartEnd(end,busySchedule.get(k+1).start(),false);
+                
+                if(possibleTime.duration() >= meetingDuration){
+                    possibleTimes.add(possibleTime);
+                    
+                }
+                
+
+            }
+            
+
+
+
+
+
+
+        }
+        System.out.println("done");
+
+
+
+
+
+
+        
+
+        
     
 
-    
     
     
     //edge case
-    return possibleTimes;
+     return possibleTimes;
+
+    //return Arrays.asList();
   }
 
     //check if person is attendee of event
