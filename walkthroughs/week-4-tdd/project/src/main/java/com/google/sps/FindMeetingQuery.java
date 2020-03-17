@@ -49,7 +49,7 @@ public final class FindMeetingQuery {
 
     //find feasible times for primary attendee
     String primaryAttendee = attendees.get(0);
-    System.out.println("Primary Attendee: "+primaryAttendee);
+    // System.out.println("Primary Attendee: "+primaryAttendee);
 
     //primary attendee schedule
     HashSet primaryAttendeeSchedule = new HashSet<TimeRange>();
@@ -74,6 +74,18 @@ public final class FindMeetingQuery {
                         feasibleTimesForPrimaryAttendee.add(currentMeetingTime);
     }
 
+    if(numberOfAttendees ==1){
+            List<TimeRange> list = new ArrayList<TimeRange>();
+            Iterator<TimeRange> myIt = feasibleTimesForPrimaryAttendee.iterator(); 
+            while (myIt.hasNext()){
+                list.add(myIt.next());
+                
+            }
+
+            Collections.sort(list, TimeRange.ORDER_BY_END);
+
+            return list;
+    }
  
      
 
@@ -105,23 +117,25 @@ public final class FindMeetingQuery {
 
         }
 
-
         
-        try{
+        //for each loop.
         Iterator<TimeRange> it = feasibleTimesForCurrentAttendee.iterator(); 
         while (it.hasNext()){
-            if(feasibleTimesForPrimaryAttendee.contains(it.next())){
-                possibleTimes.add(it.next());
+            TimeRange currentTime = it.next();
+            if(feasibleTimesForPrimaryAttendee.contains(currentTime)){
+                possibleTimes.add(currentTime);
             }
             
         }
-        }catch(NoSuchElementException e){
-            
-        }
 
+        //all possible times and remove conflicts
+        
+        
 
         
     }
+
+    
 
     
     
@@ -146,6 +160,7 @@ public final class FindMeetingQuery {
    }
     //check if there is an overlap between a meeting time and an attendee schedule
    public boolean checkIfOverlap(TimeRange currentMeetingTime,HashSet<TimeRange> attendeeSchedule){
+
      Iterator<TimeRange> i = attendeeSchedule.iterator(); 
         while (i.hasNext()){
             if(i.next().overlaps(currentMeetingTime)){
@@ -159,22 +174,18 @@ public final class FindMeetingQuery {
    }
 
     //check if one event contains the other
-   public boolean containing(TimeRange meetingTime, HashSet<TimeRange> attendeeSchedule){
-       try{
-            if(attendeeSchedule.size()>0){
-                    Iterator<TimeRange> i = attendeeSchedule.iterator(); 
-                        while (i.hasNext()){
-                            if(i.next().contains(meetingTime) ||meetingTime.contains(i.next())){
-                                return true;
-                            }      
-                    }
-                }
+    public boolean containing(TimeRange meetingTime, HashSet<TimeRange> attendeeSchedule){
+       
+                
+                        Iterator<TimeRange> i = attendeeSchedule.iterator(); 
+                            while (i.hasNext()){
+                                TimeRange currentRange = i.next();
+                                if(currentRange.contains(meetingTime) ||meetingTime.contains(currentRange)){
+                                    return true;
+                                }      
+                        }
 
-                return false;
-        }catch(NoSuchElementException e){
-            return false;
-
-        }
-   }
+                    return false;
+            }
 
 }
