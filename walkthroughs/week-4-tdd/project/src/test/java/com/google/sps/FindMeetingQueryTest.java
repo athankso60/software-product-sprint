@@ -123,7 +123,6 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void overlappingEvents() {
-      System.out.println("overlappingEvents!!!!!!");
     // Have an event for each person, but have their events overlap. We should only see two options.
     //
     // Events  :       |--A--|
@@ -144,14 +143,13 @@ public final class FindMeetingQueryTest {
     Collection<TimeRange> expected =
         Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
             TimeRange.fromStartEnd(TIME_1000AM, TimeRange.END_OF_DAY, true));
-
-    System.out.println("End of overlapping Events");
     Assert.assertEquals(expected, actual);
      
   }
 
   @Test
   public void nestedEvents() {
+    System.out.println("nested events!!!!!");
     // Have an event for each person, but have one person's event fully contain another's event. We
     // should see two options.
     //
@@ -173,7 +171,7 @@ public final class FindMeetingQueryTest {
     Collection<TimeRange> expected =
         Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
             TimeRange.fromStartEnd(TIME_1000AM, TimeRange.END_OF_DAY, true));
-
+    System.out.println("end thereof of nested events!!!!!");
     Assert.assertEquals(expected, actual);
 
    
@@ -230,7 +228,6 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void ignoresPeopleNotAttending() {
-    System.out.println("ignoresPeopleNotAttending");
     // Add an event, but make the only attendee someone different from the person looking to book
     // a meeting. This event should not affect the booking.
     Collection<Event> events = Arrays.asList(new Event("Event 1",
