@@ -41,8 +41,6 @@ public final class FindMeetingQuery {
     //noOptionsForTooLongOfARequest
     if(request.getDuration() > TimeRange.WHOLE_DAY.duration())
         return Arrays.asList();
-
-    //ignoresPeopleNotAttending
     
 
     //add attendees to attendees array
@@ -61,10 +59,6 @@ public final class FindMeetingQuery {
     //find times attendees are busy
     for(int i = 0 ; i < numberOfAttendees ; i++){
         String currentAttendee = attendees.get(i);
-        // System.out.println("Attendee "+i+ "  "+currentAttendee);
-
-        //check if current attendee times works for primary attendee
-        // HashSet currentAttendeeSchedule = new HashSet<TimeRange>();
 
         for(Event event : events){
             if(isAnAttendee(currentAttendee,event)){//checks if current attendant goes to this event
@@ -90,10 +84,16 @@ public final class FindMeetingQuery {
             }
 
         //sort times that don't work
-        Collections.sort(busySchedule, TimeRange.ORDER_BY_START);
+        Collections.sort(busySchedule, TimeRange.ORDER_BY_END);
 
         
         //print busySchedule
+        for(int j= 0; j<busySchedule.size() ; j++){
+            System.out.println(busySchedule.get(j));
+        }
+
+        trimContainedNodes(busySchedule);
+        System.out.println("After trimming containing nodes");
         for(int j= 0; j<busySchedule.size() ; j++){
             System.out.println(busySchedule.get(j));
         }
@@ -140,14 +140,18 @@ public final class FindMeetingQuery {
                 TimeRange possibleTime = TimeRange.fromStartEnd(end,dayEnd,true);
 
                 if(k!=0){
+                    int possibleStartTime = Math.max(end,possibleTime.end());
                     TimeRange anotherPossibleTime = TimeRange.fromStartEnd(end,dayEnd,true);
-                    if(anotherPossibleTime.contains(possibleTime)||anotherPossibleTime.overlaps(possibleTime)){
+                    System.out.println("Another possible time: "+anotherPossibleTime);
+                    if(anotherPossibleTime.overlaps(possibleTime)){
                         if(anotherPossibleTime.duration() >= meetingDuration){
                             possibleTimes.add(anotherPossibleTime);
                             System.out.println("added case 1");
                             
                         }
 
+                    }else if(anotherPossibleTime.contains(possibleTime)){
+                        System.out.println("contains");
                     }
                     
                 }else{
@@ -235,9 +239,11 @@ public final class FindMeetingQuery {
    }
 
    public void trimContainedNodes(List<TimeRange>listThatMayContainNestedEvents){
-       for(int i =0 ; i < listThatMayContainNestedEvents.size() ; i++){
-           for(int j =0 ; j< listThatMayContainNestedEvents.size(); j++){
-               if(listThatMayContainNestedEvents.get(i).contains(listThatMayContainNestedEvents.get(j))){
+       for(int i =0 ; i < listThatMayContainNestedEvents.size() ; i++){//iterating through the list and removing at the same time. (mark)
+           for(int j =0 ; j< listThatMayContainNestedEvents.size(); j++){//skip check for same one
+                if(i==j){
+                    continue;
+                }else if(listThatMayContainNestedEvents.get(i).contains(listThatMayContainNestedEvents.get(j))){
                    listThatMayContainNestedEvents.remove(j);
                }
            }
