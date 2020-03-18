@@ -149,7 +149,6 @@ public final class FindMeetingQueryTest {
 
   @Test
   public void nestedEvents() {
-    System.out.println("nested events!!!!!");
     // Have an event for each person, but have one person's event fully contain another's event. We
     // should see two options.
     //
@@ -171,7 +170,6 @@ public final class FindMeetingQueryTest {
     Collection<TimeRange> expected =
         Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
             TimeRange.fromStartEnd(TIME_1000AM, TimeRange.END_OF_DAY, true));
-    System.out.println("end thereof of nested events!!!!!");
     Assert.assertEquals(expected, actual);
 
    
