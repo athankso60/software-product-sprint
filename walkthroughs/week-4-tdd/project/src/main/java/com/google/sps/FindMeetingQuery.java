@@ -86,24 +86,14 @@ public final class FindMeetingQuery {
         //sort times that don't work
         Collections.sort(busySchedule, TimeRange.ORDER_BY_END);
 
-        
-        //print busySchedule
-        for(int j= 0; j<busySchedule.size() ; j++){
-            System.out.println(busySchedule.get(j));
-        }
-
+        //time nodes that are contained in others
         trimContainedNodes(busySchedule);
-        System.out.println("After trimming containing nodes");
-        for(int j= 0; j<busySchedule.size() ; j++){
-            System.out.println(busySchedule.get(j));
-        }
 
         
 
         //test
         for(int k=0 ; k < busySchedule.size(); k++){
-            
-            //System.out.println("Timerange: "+busySchedule.get(k));
+
             TimeRange currentTimeRange = busySchedule.get(k);
             int start = currentTimeRange.start();
             int end = currentTimeRange.end();
@@ -113,25 +103,11 @@ public final class FindMeetingQuery {
                 System.out.println("loop 0");
                 TimeRange possibleTime = TimeRange.fromStartEnd(dayStart,start,false);
                 
-                
-            
-                //if(k+1<=busySchedule.size()){
-                //     if(busySchedule.get(k+1).start() < start){
-                //         TimeRange anotherPossibleTime = TimeRange.fromStartEnd(dayStart,busySchedule.get(k+1).start(),false);
-
-                //         if(anotherPossibleTime.duration() >= meetingDuration){
-                //         possibleTimes.add(anotherPossibleTime);
-                //         System.out.println("added 1");
-                        
-                //     }
-                // }
-                // }else{
                         if(possibleTime.duration() >= meetingDuration){
                         possibleTimes.add(possibleTime);
                         System.out.println("added");
                         
                     }
-                //}
                 
             }
 
@@ -147,7 +123,6 @@ public final class FindMeetingQuery {
                         if(anotherPossibleTime.duration() >= meetingDuration){
                             possibleTimes.add(anotherPossibleTime);
                             System.out.println("added case 1");
-                            
                         }
 
                     }else if(anotherPossibleTime.contains(possibleTime)){
@@ -159,47 +134,20 @@ public final class FindMeetingQuery {
                         possibleTimes.add(possibleTime); 
                         System.out.println("added case 2");
                     }
-                }
-
-               
-                
-                
-
-                
-
-
-                
+                }     
             }
 
             if(k+1<busySchedule.size()){
                 System.out.println("loop 2");
                 TimeRange possibleTime = TimeRange.fromStartEnd(end,busySchedule.get(k+1).start(),false);
-                // if((k-1)!<0){
-                //     TimeRange anotherPossibleTime = TimeRange.fromStartEnd(dayStart,busySchedule.get(k-1).end(),false);
-                //     if(anotherePossibleTime.duration() >= meetingDuration){
-                //         if(anotherPossibleTime.contains(possibleTime)){
-                //             possibleTimes.add(anotherPossibleTime);
-                //         }
-                //     }
-                // }else{
+                
                     if(possibleTime.duration() >= meetingDuration){
                     possibleTimes.add(possibleTime);
 
                     System.out.println("added");
                     
                 }
-                // }
-
-                
-                
-
             }
-            
-
-
-
-
-
 
         }
         
@@ -240,8 +188,8 @@ public final class FindMeetingQuery {
 
    public void trimContainedNodes(List<TimeRange>listThatMayContainNestedEvents){
        for(int i =0 ; i < listThatMayContainNestedEvents.size() ; i++){//iterating through the list and removing at the same time. (mark)
-           for(int j =0 ; j< listThatMayContainNestedEvents.size(); j++){//skip check for same one
-                if(i==j){
+           for(int j =0 ; j< listThatMayContainNestedEvents.size(); j++){
+                if(i==j){//skip for same one
                     continue;
                 }else if(listThatMayContainNestedEvents.get(i).contains(listThatMayContainNestedEvents.get(j))){
                    listThatMayContainNestedEvents.remove(j);
